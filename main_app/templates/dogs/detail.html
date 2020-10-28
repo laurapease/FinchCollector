@@ -19,10 +19,25 @@
     </div>
   </div>
   <div class="col s6">
+    <form action="{% url 'add_walking' dog.id %}" method="post">
+      {% csrf_token %} {{ walking_form.as_p }}
+      <input type="submit" class="btn" value="Add Walking" />
+    </form>
+    <br />
+    {% if dog.walked_for_today %}
+    <div class="card-panel teal-text center-align">
+      {{dog.name}} has been given all walks for today!
+    </div>
+    {% else %}
+    <div class="card-panel red-text center-align">
+      {{dog.name}} might need a walk!
+    </div>
+    {% endif %}
     <table class="striped">
       <thead>
         <tr>
           <th>Date</th>
+          <th>Note</th>
           <th>Walk</th>
         </tr>
       </thead>
@@ -30,11 +45,24 @@
         {% for walking in dog.walking_set.all %}
         <tr>
           <td>{{walking.date}}</td>
-          <td>{{feeding.get_walk_display}}</td>
+          <td>{{walking.note}}</td>
+          <td>{{walking.get_walk_display}}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+<script>
+  const dateEl = document.getElementById("id_date");
+  M.Datepicker.init(dateEl, {
+    format: "yyyy-mm-dd",
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true,
+  });
+
+  const selectEl = document.getElementById("id_walk");
+  M.FormSelect.init(selectEl);
+</script>
 {% endblock %}
