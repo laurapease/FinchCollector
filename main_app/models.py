@@ -16,7 +16,7 @@ class Toy(models.Model):
     color = models.CharField(max_length=20)
 
     def __str__(self):
-            return self.name
+        return self.name
 
 class Dog(models.Model):
     name = models.CharField(max_length=100)

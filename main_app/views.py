@@ -25,13 +25,21 @@ def dogs_detail(request, dog_id):
     return render(request, 'dogs/detail.html', { 
         'dog': dog, 
         'walking_form': walking_form,
-         'toys': unused_toys 
+        'toys': unused_toys 
     }) 
+
+
+def unused_toy(request, dog_id, toy_id):
+    dog = Dog.objects.get(id=dog_id)
+    toy = Toy.objects.get(id=toy_id)
+    dog.toys.add(toy)
+    return redirect('detail', dog_id)
 
 def add_walking(request, dog_id):
     form = WalkingForm(request.POST)
+    
     if form.is_valid():
-        new_walking = form.save(commit=False)
-        new_walking.dog_id = dog_id
-        new_walking.save()
+        new_form = form.save(commit=False)
+        new_form.dog_id = dog_id
+        new_form.save()
     return redirect('detail', dog_id=dog_id)       
