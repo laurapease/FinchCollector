@@ -5,7 +5,7 @@ from .forms import WalkingForm
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'index.html')
 
 def about(request):
     return render(request, 'about.html')
@@ -28,8 +28,13 @@ def dogs_detail(request, dog_id):
         'toys': unused_toys 
     }) 
 
-
 def unused_toy(request, dog_id, toy_id):
+    dog = Dog.objects.get(id=dog_id)
+    toy = Toy.objects.get(id=toy_id)
+    dog.toys.add(toy)
+    return redirect('detail', dog_id)
+
+def dogs_toy(request, dog_id, toy_id):
     dog = Dog.objects.get(id=dog_id)
     toy = Toy.objects.get(id=toy_id)
     dog.toys.add(toy)

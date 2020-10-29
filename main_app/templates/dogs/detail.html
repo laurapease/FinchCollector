@@ -67,9 +67,34 @@
       </div>
     </div>
     {% endfor %} {% else %}
-    <h5>Oh no! No Toys for {{ dog.name }}:(</h5>
+    <h5>Oh no! No Toys for {{ dog.name }} 😫</h5>
     {% endif %}
   </div>
+
+  <!-- Available toys-->
+
+  <div class="col s6">
+    <h3>Available Toys</h3>
+    {% if toys.count %} {% for toy in toys.all %}
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">
+          A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{
+          toy.name }}
+        </span>
+      </div>
+      <div class="card-action">
+        <form action="{% url 'dogs_toy' dog.id toy.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn">Add Toy</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <h5>{{dog.name}} Already has all the toys! 😃</h5>
+    {% endif %}
+  </div>
+
   <script>
     const dateEl = document.getElementById("id_date");
     M.Datepicker.init(dateEl, {
