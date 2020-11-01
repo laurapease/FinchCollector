@@ -12,7 +12,7 @@ WALKS = (
 
 class Toy(models.Model):
     name = models.CharField(max_length=50)
-    type = models.CharField(max_length=50)
+    # type = models.CharField(max_length=50)
     color = models.CharField(max_length=20)
 
     def __str__(self):
@@ -33,7 +33,7 @@ class Dog(models.Model):
         return self.walking_set.filter(date=date.today()).count() >= len(WALKS)    
 
 class Walking(models.Model):
-    date = models.DateField('date')
+    date = models.DateField('date of walk')
     note = models.CharField(max_length=50) 
     walk = models.CharField(
         max_length=1,
