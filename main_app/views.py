@@ -75,4 +75,26 @@ def add_dog(request):
     else: 
         form = DogForm()
         context = {'form': form}
-        return render(request, 'dogs/new.html', context)        
+        return render(request, 'dogs/new.html', context)     
+
+# ----------------- EDIT A DOG
+
+def edit_dog(request, dog_id):
+    dog = Dog.objects.get(id=dog_id)
+
+    if request.method == 'POST':
+        dog_form = DogForm(request.POST, instance=dog)
+        if dog_form.is_valid():
+            updated_dog = dog_form.save()
+            return redirect('detail', updated_dog.id)
+    else:
+        form = DogForm(instance=dog)
+        context = {'form': form, 'dog': dog}
+        return render(request, 'dogs/edit.html', context)   
+
+
+# ----------------- DELETE A DOG
+
+def delete_dog(request, dog_id):
+    Dog.objects.get(id=dog_id).delete()
+    return redirect('index')

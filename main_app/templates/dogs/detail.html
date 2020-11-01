@@ -18,94 +18,102 @@
       </div>
     </div>
   </div>
-  <div class="col s6">
-    <form action="{% url 'add_walking' dog.id %}" method="post">
-      {% csrf_token %} {{ walking_form.as_p }}
-      <input type="submit" class="btn" value="Add a Walk!" />
-    </form>
-    <br />
-    {% if dog.walked_for_today %}
-    <div class="card-panel teal-text center-align">
-      {{dog.name}} has been given all walks for today!
+
+  <!--Edit and Delete Actions -->
+
+  <div class="card-action">
+    <a href="{% url 'delete_dog' dog.id%}" class="btn-small red">Delete Dog</a>
+    <a href="{% url 'edit_dog' dog.id %}" class="btn-small">Edit Dog</a>
+
+    <div class="col s6">
+      <form action="{% url 'add_walking' dog.id %}" method="post">
+        {% csrf_token %} {{ walking_form.as_p }}
+        <input type="submit" class="btn" value="Add a Walk!" />
+      </form>
+      <br />
+      {% if dog.walked_for_today %}
+      <div class="card-panel teal-text center-align">
+        {{dog.name}} has been given all walks for today!
+      </div>
+      {% else %}
+      <div class="card-panel red-text center-align">
+        {{dog.name}} might need a walk!
+      </div>
+      {% endif %}
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Note</th>
+            <th>Walk</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for walking in dog.walking_set.all %}
+          <tr>
+            <td>{{walking.date}}</td>
+            <td>{{walking.note}}</td>
+            <td>{{walking.get_walk_display}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-    {% else %}
-    <div class="card-panel red-text center-align">
-      {{dog.name}} might need a walk!
-    </div>
-    {% endif %}
-    <table class="striped">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Note</th>
-          <th>Walk</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for walking in dog.walking_set.all %}
-        <tr>
-          <td>{{walking.date}}</td>
-          <td>{{walking.note}}</td>
-          <td>{{walking.get_walk_display}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
   </div>
-</div>
-<hr />
-<div class="row">
-  <div class="col s6">
-    <h3>{{ dog.name }}'s Toys</h3>
-    {% if dog.toys.count %} {% for toy in dog.toys.all %}
-    <div class="card">
-      <div class="card-content">
-        <div class="card-title">
-          A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{
-          toy.name }}
+  <hr />
+  <div class="row">
+    <div class="col s6">
+      <h3>{{ dog.name }}'s Toys</h3>
+      {% if dog.toys.count %} {% for toy in dog.toys.all %}
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">
+            A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{
+            toy.name }}
+          </div>
         </div>
       </div>
+      {% endfor %} {% else %}
+      <h5>Oh no! No Toys for {{ dog.name }} 😫</h5>
+      {% endif %}
     </div>
-    {% endfor %} {% else %}
-    <h5>Oh no! No Toys for {{ dog.name }} 😫</h5>
-    {% endif %}
-  </div>
 
-  <!-- Available toys-->
+    <!-- Available toys-->
 
-  <div class="col s6">
-    <h3>Available Toys</h3>
-    {% if dog.toys %} {% for toy in dog.toys.all %}
-    <div class="card">
-      <div class="card-content">
-        <div class="card-title">
-          A <span style="color: {{ toy.color }}">{{ toy.color }}</span>{{
-          toy.type }}
+    <div class="col s6">
+      <h3>Available Toys</h3>
+      {% if dog.toys %} {% for toy in dog.toys.all %}
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">
+            A <span style="color: {{ toy.color }}">{{ toy.color }}</span>{{
+            toy.type }}
+          </div>
+        </div>
+        <div class="card-action">
+          <form action="{% url 'dogs_toy' dog.id toy.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn">Add Toy</button>
+          </form>
         </div>
       </div>
-      <div class="card-action">
-        <form action="{% url 'dogs_toy' dog.id toy.id %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="btn">Add Toy</button>
-        </form>
-      </div>
+      {% endfor %} {% else %}
+      <h5>{{dog.name}} Already has all the toys! 😃</h5>
+      {% endif %}
     </div>
-    {% endfor %} {% else %}
-    <h5>{{dog.name}} Already has all the toys! 😃</h5>
-    {% endif %}
+
+    <script>
+      const dateEl = document.getElementById("id_date");
+      M.Datepicker.init(dateEl, {
+        format: "yyyy-mm-dd",
+        defaultDate: new Date(),
+        setDefaultDate: true,
+        autoClose: true,
+      });
+
+      const selectEl = document.getElementById("id_walk");
+      M.FormSelect.init(selectEl);
+    </script>
+    {% endblock %}
   </div>
-
-  <script>
-    const dateEl = document.getElementById("id_date");
-    M.Datepicker.init(dateEl, {
-      format: "yyyy-mm-dd",
-      defaultDate: new Date(),
-      setDefaultDate: true,
-      autoClose: true,
-    });
-
-    const selectEl = document.getElementById("id_walk");
-    M.FormSelect.init(selectEl);
-  </script>
-  {% endblock %}
 </div>
