@@ -13,5 +13,5 @@ urlpatterns = [
     path('dogs/new/', views.add_dog, name='add_dog'),
     path('dogs/<int:dog_id>/edit/', views.edit_dog, name='edit_dog'),
     path('dogs/<int:dog_id>/delete/', views.delete_dog, name='delete_dog'),
-    # path('accounts/signup', views.signup, name='signup')
+    path('accounts/signup', views.signup, name='signup')
 ]

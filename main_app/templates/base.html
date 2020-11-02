@@ -29,9 +29,15 @@
           <ul class="right">
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/dogs">View All My Dogs</a></li>
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
 
+            {% if user.is_authenticated %}
             <li><a href="{% url 'add_dog' %}">Add a Dog!</a></li>
+            <li><a href="/dogs">View All My Dogs</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+
+            {% endif %}
           </ul>
         </div>
       </nav>
