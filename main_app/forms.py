@@ -9,4 +9,4 @@ class WalkingForm(forms.ModelForm):
 class DogForm(forms.ModelForm):
   class Meta:
     model = Dog
-    fields = ('name', 'breed', 'description', 'age')
+    fields = ('name', 'breed', 'description', 'age') 

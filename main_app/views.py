@@ -16,7 +16,7 @@ def about(request):
 # ----------------- DOG INDEX
 @login_required
 def dogs_index(request):
-    dogs = Dog.objects.all()
+    dogs = Dog.objects.filter(user=request.user)
 
     return render(request, 'dogs/index.html', { 'dogs': dogs })  
 
@@ -123,10 +123,10 @@ def signup(request):
             return redirect('dogs_index')
         else:
             error_message = 'Invalid sign up -- please try again'
-            form = UserCreationForm()
-            context = {'form': form, 'error_message': error_message}
-            return render(request, 'regstration/signup.html', context)
+            
+        form = UserCreationForm()
+            
+        context = {'form': form, 'error_message': error_message}
+        return render(request, 'regstration/signup.html', context)
 
-    form = UserCreationForm()
-    context = {'form': form, 'error_message': error_message}
-    return render (request, 'registration/signup.html', context)        
+          
